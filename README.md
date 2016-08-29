@@ -14,7 +14,10 @@ configuration is kept in some JSON / JSON5 file. Environment configuration
 should be taken from corresponding JSON / JSON5 file (e.g.`config.ENV.json`).
 Default environment is `development`. When configuration is loaded default one
 is merged with environment, so that env configuration overrides defaults.
+
+<strong>
 If configuration can't be read application should crash.
+</strong>
 
 ### API
 
@@ -68,6 +71,13 @@ Frame configuration specifies its size and offsets for fields.
 The reason of is because each frame can have other fields coded inside, and
 these fields are not of concern of this application, but still all the fields
 can be coded in whatever way.
+
+<strong>
+Note: if configuration is invalid, application should crash. Examples of
+invalid configuration:
+- Overlapping fields
+- Field offset + size exceeds frame size
+</strong>
 
 ### Processing
 
