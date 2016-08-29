@@ -5,7 +5,10 @@ Test task for Node.js developers.
 ## Task
 
 The main goal is to create a small Web application with only one API processing
-input binary data and returning statistics for this data.
+input binary data and returning aggregated statistics for this data. Application
+should be able to process relatively big amounts of data and high number of
+concurrent requests (i.e. use all you can to achieve higher performance, but
+still use Node as a platform :P).
 
 ### Configuration
 
