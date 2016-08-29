@@ -1,2 +1,124 @@
-# test-task
-Test task for Node.js developers
+# Test task
+
+Test task for Node.js developers.
+
+## Task
+
+The main goal is to create a small Web application with only one API processing
+input binary data and returning statistics for this data.
+
+### Configuration
+
+Configuration depends on environment (`NODE_ENV` environment variable). Default
+configuration is kept in some JSON / JSON5 file. Environment configuration
+should be taken from corresponding JSON / JSON5 file (e.g.`config.ENV.json`).
+Default environment is `development`. When configuration is loaded default one
+is merged with environment, so that env configuration overrides defaults.
+If configuration can't be read application should crash.
+
+### API
+
+Endpoint URL: `/api/v1/process`
+Endpoint method: `'PORT`'
+
+(requests to any other endpoint should return 501 with error message)
+
+Handler of this API checks if `Content-Type` header is set to
+`application/octet-stream`. If header value is different, request must be
+aborted with 406 error and error message.
+
+Incoming data should be parsed and aggregated as specified below. If there is
+a parsing error, request should be aborted with 415 and error describing error.
+
+The result of processing should be returned with 200 as JSON message. Assume,
+that client always expects JSON output from this Web application.
+
+### Input data
+
+Input data is a history of payment transactions. Each record has following
+fields:
+
+- Sender name (string, 32 bytes)
+- Receiver name (string, 32 bytes)
+- Amount in cents (4 bytes)
+- Date as timestamp in ms (6 bytes)
+
+Each record is coded into a binary frame. Frame structure is configurable and
+specified in application configuration, so it can be used for parsing frames
+before processing.
+
+Assumptions:
+- Strings are UTF-8 strings
+- Numbers are unsigned integers in big endian
+
+Frame configuration specifies its size and offsets for fields.
+
+```json
+{
+  "frameSize": 128,
+  "offset": {
+    "sender": 0,
+    "receiver": 32,
+    "amount": 72,
+    "timestamp": 80
+  }
+}
+```
+
+The reason of is because each frame can have other fields coded inside, and
+these fields are not of concern of this application, but still all the fields
+can be coded in whatever way.
+
+### Processing
+
+Processing of all the frames should result in aggregated statistics:
+
+- Total amount (sum of `amount` values)
+- Number of transactions (i.e. number of frames)
+- Stats per each user:
+    - Number of transactions
+    - Total sent amount
+    - Total received amount
+- Stats per each day:
+    - Number of transactions
+
+This can be done in a free form, the formatting below can be used as a
+reference:
+
+```json
+{
+  "total": {
+    "amount": 10050000,
+    "transactions": 100
+  },
+  "customerStatistics": {
+    "alex": {
+      "transactions": 10,
+      "totalSent": 1000,
+      "totalReceived": 100
+    }
+  },
+  "dayStatistics": {
+    "2016-09-01T00:00:00Z": {
+      "transactions": 100
+    }
+  }
+}
+```
+
+### Error messages
+
+In case of any error API should return JSON message representing `Error` object
+with `name` and `message` fields. Optionally, error objects can be custom errors
+with corresponding HTTP status codes put into JSON output as well.
+
+## Assumptions
+
+- Size of input data frame can be quite big
+- Client making HTTP requests sets indefinite request timeout
+
+## Testing
+
+### Utility for sending test content
+
+TODO will be done soon
