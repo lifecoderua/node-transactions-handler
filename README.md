@@ -68,9 +68,9 @@ Frame configuration specifies its size and offsets for fields.
 }
 ```
 
-The reason of is because each frame can have other fields coded inside, and
-these fields are not of concern of this application, but still all the fields
-can be coded in whatever way.
+The rationale of having this frame specification is that frame can have other
+fields coded inside, and these fields are not of concern of this application,
+but still mentioned fields can be coded and positioned in whatever way.
 
 <strong>
 Note: if configuration is invalid, application should crash. Examples of
