@@ -25,7 +25,7 @@ If configuration can't be read application should crash.
 ### API
 
 Endpoint URL: `/api/v1/process`
-Endpoint method: `'PORT`'
+Endpoint method: `'POST`'
 
 (requests to any other endpoint should return 501 with error message)
 
@@ -134,4 +134,10 @@ with corresponding HTTP status codes put into JSON output as well.
 
 ### Utility for sending test content
 
-TODO will be done soon
+Execute `bin/client` for usage.
+
+For testing you can use following command:
+
+    bin/client -u http://... -f 128 -s 0 -r 40 -a 80 -t 120
+
+For stress-testing you can add `-S` option, plus play with `-c` and `-m`.
