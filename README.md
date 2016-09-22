@@ -84,7 +84,8 @@ invalid configuration:
 
 ### Processing
 
-Processing of all the frames should result in aggregated statistics:
+Statistics calculated per request. Processing of all the frames in request
+should result in aggregated statistics:
 
 - Total amount (sum of `amount` values)
 - Number of transactions (i.e. number of frames)
